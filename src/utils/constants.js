@@ -9,5 +9,3 @@ export const api_options = {
 };
 
 export const POSTER_URL = "https://image.tmdb.org/t/p/w500/"
-// export const GPT_API_KEY = "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"
-export const GEMINI_KEY = "AIzaSyCodXUfl2vblzA8uMdM1-avUbWhLSp4Ms0"
