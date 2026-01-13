@@ -8,7 +8,7 @@ const MainController = () => {
     const mainMovie = movies[0]
 
     return (
-        <div>
+        <div className="bg-black">
             <VideoController movieId={mainMovie.id} />
             <VideoInfo title={mainMovie.title} desc={mainMovie.overview} />
         </div>);

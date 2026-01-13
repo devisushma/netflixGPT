@@ -13,7 +13,7 @@ const Browse = () => {
     getNowPlayingMovies();
   }, []);
   return (
-    <div className="bg-black bg-opacity-65 h-screen overflow-x-hidden overflow-y-auto">
+    <div className="bg-black h-screen overflow-x-hidden overflow-y-auto">
       <Header />
       {showGptSearch ? (
         <GptSearch />
