@@ -7,9 +7,9 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { profile_logo } from "../utils/constants";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,6 @@ const Login = () => {
   const name = useRef(null);
   const password = useRef(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
 
   const handleButtonClick = () => {
     const nameVal = name.current ? name.current.value : "";
@@ -38,14 +37,11 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL:
-              "https://lh3.googleusercontent.com/a/ACg8ocJzKRz8NnNISZpWowIbPaDODDnl7yNI9RnvEclEh85veafQ4d80LA=s96-c",
+            photoURL: profile_logo
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser;
-              console.log(user,"user")
               dispatch(addUser({ uid, email, displayName, photoURL }));
-              navigate("/browse");
             })
             .catch((error) => {
               console.log(error);
@@ -66,7 +62,6 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log(user);
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -81,57 +76,53 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <img
-        className="absolute"
-        src="https://mustafaselman.github.io/001-netflix-surveyform/background_image.jpg"
-        alt="logo"
-      />
+      <div className="absolute">
+        <img
+          className="h-screen w-screen object-cover"
+          src="https://mustafaselman.github.io/001-netflix-surveyform/background_image.jpg"
+          alt="logo"
+        />
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+      </div>
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="absolute bg-black opacity-90 w-4/12 right-0 left-0 mx-auto my-36"
+        className="absolute p-12 bg-black bg-opacity-70 w-3/12 my-36 mx-auto right-0 left-0 text-white rounded-lg backdrop-blur-sm shadow-2xl"
       >
-        <h1 className="text-white font-bold text-4xl mx-10 my-2">
-          {isSignIn ? "Sign in" : "Sign up"}
+        <h1 className="font-bold text-3xl py-4">
+          {isSignIn ? "Sign In" : "Sign Up"}
         </h1>
-        <br />
+
         {!isSignIn && (
-          <>
-            <input
-              type="text"
-              ref={name}
-              placeholder="Name"
-              className="p-2 mx-10 w-8/12 my-2 bg-gray-500 text-white rounded-lg"
-            />
-            <br />
-          </>
+          <input
+            type="text"
+            ref={name}
+            placeholder="Full Name"
+            className="p-4 my-4 w-full bg-[#333] rounded-sm bg-opacity-50 border border-transparent focus:border-white focus:outline-none transition-all duration-300"
+          />
         )}
         <input
           type="text"
-          placeholder="Email"
+          placeholder="Email Address"
           ref={email}
-          className="p-2 mx-10 w-8/12 bg-gray-500 text-white rounded-lg"
+          className="p-4 my-4 w-full bg-[#333] rounded-sm bg-opacity-50 border border-transparent focus:border-white focus:outline-none transition-all duration-300"
         />
-        <br />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           ref={password}
-          className="p-2 mx-10 my-2 w-8/12 bg-gray-500 text-white rounded-lg"
+          className="p-4 my-4 w-full bg-[#333] rounded-sm bg-opacity-50 border border-transparent focus:border-white focus:outline-none transition-all duration-300"
         />
-        <br />
-        <p className="text-red-900 font-bold mx-10">{errorMessage}</p>
+        <p className="text-red-500 font-bold text-lg py-2">{errorMessage}</p>
         <button
-          className="mx-10 my-2 p-2 text-white w-8/12 bg-red-600 rounded-lg font-bold"
+          className="p-4 my-6 bg-red-700 w-full rounded-sm font-bold hover:bg-red-800 transition-colors duration-300"
           onClick={handleButtonClick}
         >
           {isSignIn ? "Sign In" : "Sign Up"}
         </button>
-        <br />
-        <p
-          className="text-white mx-10 cursor-pointer my-2"
-          onClick={handleIsSignin}
-        >
-          {isSignIn ? "new to netflix? signup now" : "Already User? Sign In"}
+        <p className="py-4 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200" onClick={handleIsSignin}>
+          {isSignIn
+            ? "New to Netflix? Sign up now."
+            : "Already a user? Sign In now."}
         </p>
       </form>
     </div>
